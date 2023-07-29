@@ -42,7 +42,7 @@ final ButtonStyle textButtonStyle2 = ButtonStyle(
     )),
     padding: const MaterialStatePropertyAll(EdgeInsets.zero));
 
- final ButtonStyle textButtonStyle3 = ButtonStyle(
+final ButtonStyle textButtonStyle3 = ButtonStyle(
   overlayColor:
       MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
     if (states.contains(MaterialState.focused)) {
@@ -63,6 +63,29 @@ final ButtonStyle textButtonStyle2 = ButtonStyle(
     borderRadius: BorderRadius.all(Radius.circular(20)),
   )),
   // padding: const MaterialStatePropertyAll(EdgeInsets.all(5)),
+);
+
+final ButtonStyle textButtonStyle4 = ButtonStyle(
+  overlayColor:
+      MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+    if (states.contains(MaterialState.focused)) {
+      return const Color.fromARGB(255, 134, 165, 219);
+    }
+    if (states.contains(MaterialState.hovered)) {
+      return Colors.blue.withOpacity(0.4);
+    }
+    if (states.contains(MaterialState.pressed)) {
+      return const Color.fromARGB(255, 125, 134, 141).withOpacity(0.5);
+    }
+    return null;
+  }),
+  backgroundColor: const MaterialStatePropertyAll(Colors.transparent),
+  minimumSize: const MaterialStatePropertyAll(Size(25, 60)),
+  maximumSize: const MaterialStatePropertyAll(Size(40, 70)),
+  shape: const MaterialStatePropertyAll(RoundedRectangleBorder(
+    borderRadius: BorderRadius.all(Radius.circular(20)),
+  )),
+  padding: const MaterialStatePropertyAll(EdgeInsets.all(15)),
 );
 
 List<Color> homeBlueColor = <Color>[

@@ -94,7 +94,9 @@ class HorizontalRowsOptions extends StatelessWidget {
                         .color(const Color.fromARGB(255, 120, 184, 240))
                         .make(),
                   ],
+                  
                 ),
+                
               ),
             );
           },

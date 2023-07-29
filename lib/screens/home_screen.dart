@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (value == "X") {
       value = "*";
     }
-    if (value == "C") {
+    if (value == "AC") {
       input = '';
       output = '';
     } else if (value == '<' && !input.isEmptyOrNull) {
@@ -58,6 +58,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: homeGrayColor,
+          ),
+        ),
         child: Column(
           children: [
             Container(
@@ -67,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     colors: homeGrayColor,
                   ),
                 ),
-                height: MediaQuery.of(context).size.height * 0.5,
+                height: MediaQuery.of(context).size.height * 0.36,
                 width: MediaQuery.of(context).size.width,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -81,103 +86,108 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     output.text.color(Colors.white54).size(outputSize).make(),
                     const SizedBox(
-                      height: 20,
+                      height: 8,
                     )
                   ],
                 )),
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: homeBlueColor,
+            VxArc(
+              height: 18,
+              arcType: VxArcType.convex,
+              edge: VxEdge.top,
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: homeBlueColor,
+                  ),
                 ),
-              ),
-              height: MediaQuery.of(context).size.height * 0.5,
-              width: MediaQuery.of(context).size.width,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  VStack(
-                      alignment: MainAxisAlignment.center,
-                      crossAlignment: CrossAxisAlignment.center,
-                      spacing: 4,
-                      [
-                        Padding(
-                          padding: const EdgeInsets.all(3.0),
-                          child: SizedBox(
-                            height: 75,
-                            width: MediaQuery.of(context).size.width * 0.9,
-                            child: HorizontalRowsHome(
-                                textButtonStyle: textButtonStyle1,
-                                symbol: const ["AC", "%", "<", "/"],
-                                onClick: onClick),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(3.0),
-                          child: SizedBox(
-                            height: 75,
-                            width: MediaQuery.of(context).size.width * 0.9,
-                            child: HorizontalRowsHome(
-                                textButtonStyle: textButtonStyle1,
-                                symbol: const ["7", "8", "9", "X"],
-                                onClick: onClick),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(3.0),
-                          child: SizedBox(
-                            height: 75,
-                            width: MediaQuery.of(context).size.width * 0.9,
-                            child: HorizontalRowsHome(
-                                textButtonStyle: textButtonStyle1,
-                                symbol: const ["4", "5", "6", "-"],
-                                onClick: onClick),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(3.0),
-                          child: SizedBox(
-                            height: 75,
-                            width: MediaQuery.of(context).size.width * 0.9,
-                            child: HorizontalRowsHome(
-                                textButtonStyle: textButtonStyle1,
-                                symbol: const ["1", "2", "3", "+"],
-                                onClick: onClick),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(3.0),
-                          child: SizedBox(
-                            height: 75,
-                            width: MediaQuery.of(context).size.width * 0.9,
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                  height: 75,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.4,
-                                  child: HorizontalRowsHome(
-                                      textButtonStyle: textButtonStyle1,
-                                      symbol: const ["0", "."],
-                                      itemCount: 2,
-                                      onClick: onClick),
-                                ).expand(),
-                                TextButton(
-                                  style: textButtonStyle2.copyWith(
-                                      backgroundColor:
-                                          const MaterialStatePropertyAll(
-                                              Color.fromARGB(
-                                                  189, 51, 140, 224))),
-                                  onPressed: () => onClick("="),
-                                  child: "=".text.size(42).gray900.make(),
-                                )
-                              ],
+                height: MediaQuery.of(context).size.height * 0.519,
+                width: MediaQuery.of(context).size.width,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    VStack(
+                        alignment: MainAxisAlignment.center,
+                        crossAlignment: CrossAxisAlignment.center,
+                        spacing: 4,
+                        [
+                          Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: SizedBox(
+                              height: 75,
+                              width: MediaQuery.of(context).size.width * 0.9,
+                              child: HorizontalRowsHome(
+                                  textButtonStyle: textButtonStyle1,
+                                  symbol: const ["AC", "%", "<", "/"],
+                                  onClick: onClick),
                             ),
                           ),
-                        ),
-                      ]),
-                ],
+                          Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: SizedBox(
+                              height: 75,
+                              width: MediaQuery.of(context).size.width * 0.9,
+                              child: HorizontalRowsHome(
+                                  textButtonStyle: textButtonStyle1,
+                                  symbol: const ["7", "8", "9", "X"],
+                                  onClick: onClick),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: SizedBox(
+                              height: 75,
+                              width: MediaQuery.of(context).size.width * 0.9,
+                              child: HorizontalRowsHome(
+                                  textButtonStyle: textButtonStyle1,
+                                  symbol: const ["4", "5", "6", "-"],
+                                  onClick: onClick),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: SizedBox(
+                              height: 75,
+                              width: MediaQuery.of(context).size.width * 0.9,
+                              child: HorizontalRowsHome(
+                                  textButtonStyle: textButtonStyle1,
+                                  symbol: const ["1", "2", "3", "+"],
+                                  onClick: onClick),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: SizedBox(
+                              height: 75,
+                              width: MediaQuery.of(context).size.width * 0.9,
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    height: 75,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.4,
+                                    child: HorizontalRowsHome(
+                                        textButtonStyle: textButtonStyle1,
+                                        symbol: const ["0", "."],
+                                        itemCount: 2,
+                                        onClick: onClick),
+                                  ).expand(),
+                                  TextButton(
+                                    style: textButtonStyle2.copyWith(
+                                        backgroundColor:
+                                            const MaterialStatePropertyAll(
+                                                Color.fromARGB(
+                                                    189, 51, 140, 224))),
+                                    onPressed: () => onClick("="),
+                                    child: "=".text.size(42).gray900.make(),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ]),
+                  ],
+                ),
               ),
             )
           ],

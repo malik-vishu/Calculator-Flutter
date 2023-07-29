@@ -1,4 +1,5 @@
 import 'package:calculator/screens/calc_type_screen.dart';
+import 'package:calculator/screens/conversion_screen.dart';
 import 'package:calculator/screens/home_screen.dart';
 import 'package:calculator/utils/all_routes.dart';
 import 'package:flutter/material.dart';
@@ -16,10 +17,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Calculator',
         debugShowCheckedModeBanner: false,
-        initialRoute: AllRoutes.home,
+        initialRoute: AllRoutes.conversion,
         routes: {
           AllRoutes.home: (context) => HomeScreen(),
-          AllRoutes.options: (context) => CalculatorOptionsScreen()
+          AllRoutes.options: (context) => CalculatorOptionsScreen(),
+          AllRoutes.conversion: (context) => ConversionScreen()
         });
   }
 }
