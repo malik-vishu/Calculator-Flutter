@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:units_converter/units_converter.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../components/home_rows.dart';
 import '../components/themes.dart';
 
-List<String> typeList = ["one", "two"];
+List<String> typeList = ["km", "m", "cm", "mm", "um", "nm"];
 
 class ConversionScreen extends StatefulWidget {
   const ConversionScreen({super.key});
@@ -16,27 +17,40 @@ class ConversionScreen extends StatefulWidget {
 class _ConversionScreenState extends State<ConversionScreen> {
   String dropdownValue = typeList.first;
   String dropdownValue2 = typeList.first;
-  TextEditingController controllerVar1 = TextEditingController();
-  TextEditingController controllerVar2 = TextEditingController();
+
   bool field1 = false;
   bool field2 = false;
+
   String field1Text = "";
   String field2Text = "";
+
   onClick(value) {
     print(value);
     if (field1 && !field2) {
-      print("Field one is true and Field two is False");
+      // print("Field one is true and Field two is False");
       if (value == "AC") {
         field1Text = "";
-      } else {
-        field1Text += value;
-      }
-    } else if (!field1 && field2) {
-      print("Field One is false And Field Two Is true ");
-      if (value == "AC") {
         field2Text = "";
       } else {
+        field1Text += value;
+        if (field1Text.isNotEmptyAndNotNull) {
+          field2Text =
+              conversionFunction(field1Text, dropdownValue, dropdownValue2)
+                  .toString();
+        }
+      }
+    } else if (!field1 && field2) {
+      // print("Field One is false And Field Two Is true ");
+      if (value == "AC") {
+        field2Text = "";
+        field1Text = "";
+      } else {
         field2Text += value;
+        if (field2Text.isNotEmptyAndNotNull) {
+          field1Text =
+              conversionFunction(field2Text, dropdownValue2, dropdownValue)
+                  .toString();
+        }
       }
     }
     setState(() {});
@@ -90,8 +104,9 @@ class _ConversionScreenState extends State<ConversionScreen> {
                               ),
                               dropdownColor: Colors.black12,
                               onChanged: (String? value) {
+                                dropdownValue = value!;
                                 setState(() {
-                                  dropdownValue = value!;
+                                  onClick("");
                                 });
                               },
                               items: typeList.map<DropdownMenuItem<String>>(
@@ -148,8 +163,9 @@ class _ConversionScreenState extends State<ConversionScreen> {
                                 color: const Color.fromARGB(255, 214, 221, 221),
                               ),
                               onChanged: (String? value) {
+                                dropdownValue2 = value!;
                                 setState(() {
-                                  dropdownValue2 = value!;
+                                  onClick("");
                                 });
                               },
                               items: typeList.map<DropdownMenuItem<String>>(
@@ -272,8 +288,8 @@ class _ConversionScreenState extends State<ConversionScreen> {
                             width: 90,
                             child: TextButton(
                                 style: textButtonStyle4,
-                                onPressed: () => onClick("="),
-                                child: "=".text.gray800.size(42).make()),
+                                onPressed: () => onClick("<"),
+                                child: "<".text.gray800.size(42).make()),
                           ),
                         ])
                   ],
@@ -285,4 +301,30 @@ class _ConversionScreenState extends State<ConversionScreen> {
       ),
     );
   }
+}
+
+conversionFunction(String fieldText, String from, String to) {
+  //TODO
+  Map<String, LENGTH> mp = {
+    "km": LENGTH.kilometers,
+    "m": LENGTH.meters,
+    "cm": LENGTH.centimeters,
+    "mm": LENGTH.millimeters,
+    "um": LENGTH.micrometers,
+    "nm": LENGTH.nanometers
+  };
+  var length = Length(significantFigures: 5, removeTrailingZeros: true)
+    ..convert(mp[from]!, double.parse(fieldText));
+
+  Map<String, Unit> mp1 = {
+    "km": length.kilometers,
+    "m": length.meters,
+    "cm": length.centimeters,
+    "mm": length.millimeters,
+    "um": length.micrometers,
+    "nm": length.nanometers
+  };
+
+  var ans = mp1[to]!.value;
+  return ans;
 }
