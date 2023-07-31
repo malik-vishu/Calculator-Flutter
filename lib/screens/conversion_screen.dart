@@ -18,6 +18,30 @@ class _ConversionScreenState extends State<ConversionScreen> {
   String dropdownValue2 = typeList.first;
   TextEditingController controllerVar1 = TextEditingController();
   TextEditingController controllerVar2 = TextEditingController();
+  bool field1 = false;
+  bool field2 = false;
+  String field1Text = "";
+  String field2Text = "";
+  onClick(value) {
+    print(value);
+    if (field1 && !field2) {
+      print("Field one is true and Field two is False");
+      if (value == "AC") {
+        field1Text = "";
+      } else {
+        field1Text += value;
+      }
+    } else if (!field1 && field2) {
+      print("Field One is false And Field Two Is true ");
+      if (value == "AC") {
+        field2Text = "";
+      } else {
+        field2Text += value;
+      }
+    }
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,37 +107,18 @@ class _ConversionScreenState extends State<ConversionScreen> {
                             width: 10,
                           ),
                           SizedBox(
-                              width: 280,
-                              child: TextFormField(
-                                controller: controllerVar1,
-                                cursorColor:
-                                    const Color.fromARGB(255, 214, 221, 221),
-                                cursorWidth: 4,
-                                decoration: const InputDecoration(
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Color.fromARGB(
-                                              255, 214, 221, 221)),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Color.fromARGB(
-                                              255, 233, 101, 48)),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color:
-                                              Color.fromARGB(255, 12, 14, 15)),
-                                    ),
-                                    hintStyle: TextStyle(
-                                        fontSize: 20,
-                                        color:
-                                            Color.fromARGB(255, 214, 221, 221)),
-                                    hintText: "Enter value to convert",
-                                    border: OutlineInputBorder(
-                                        borderSide: BorderSide(width: 3))),
-                                keyboardType: TextInputType.none,
-                              ))
+                            width: 280,
+                            child: InkWell(
+                                onTap: () {
+                                  field1 = true;
+                                  field2 = false;
+                                  setState(() {});
+                                },
+                                child: field1Text.text
+                                    .color(Colors.white70)
+                                    .size(48)
+                                    .make()),
+                          )
                         ],
                       ),
                     ),
@@ -161,36 +166,16 @@ class _ConversionScreenState extends State<ConversionScreen> {
                           ),
                           SizedBox(
                               width: 280,
-                              child: TextFormField(
-                                controller: controllerVar2,
-                                cursorColor:
-                                    const Color.fromARGB(255, 214, 221, 221),
-                                cursorWidth: 4,
-                                decoration: const InputDecoration(
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Color.fromARGB(
-                                              255, 214, 221, 221)),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Color.fromARGB(
-                                              255, 233, 101, 48)),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color:
-                                              Color.fromARGB(255, 12, 14, 15)),
-                                    ),
-                                    hintStyle: TextStyle(
-                                        fontSize: 20,
-                                        color:
-                                            Color.fromARGB(255, 214, 221, 221)),
-                                    hintText: "Enter value to convert",
-                                    border: OutlineInputBorder(
-                                        borderSide: BorderSide(width: 3))),
-                                keyboardType: TextInputType.none,
-                              ))
+                              child: InkWell(
+                                  onTap: () {
+                                    field2 = true;
+                                    field1 = false;
+                                    setState(() {});
+                                  },
+                                  child: field2Text.text
+                                      .color(Colors.white70)
+                                      .size(48)
+                                      .make()))
                         ],
                       ),
                     )
@@ -226,7 +211,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
                                   textButtonStyle: textButtonStyle1,
                                   symbol: const ["7", "8", "9"],
                                   itemCount: 3,
-                                  onClick: null),
+                                  onClick: onClick),
                             ),
                           ),
                           Padding(
@@ -238,7 +223,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
                                   textButtonStyle: textButtonStyle1,
                                   symbol: const ["4", "5", "6"],
                                   itemCount: 3,
-                                  onClick: null),
+                                  onClick: onClick),
                             ),
                           ),
                           Padding(
@@ -250,7 +235,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
                                   textButtonStyle: textButtonStyle1,
                                   symbol: const ["1", "2", "3"],
                                   itemCount: 3,
-                                  onClick: null),
+                                  onClick: onClick),
                             ),
                           ),
                           Padding(
@@ -262,7 +247,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
                                   textButtonStyle: textButtonStyle1,
                                   symbol: const ["0", "."],
                                   itemCount: 2,
-                                  onClick: null),
+                                  onClick: onClick),
                             ),
                           ),
                         ]),
@@ -279,7 +264,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
                             width: 90,
                             child: TextButton(
                                 style: textButtonStyle4,
-                                onPressed: () {},
+                                onPressed: () => onClick("AC"),
                                 child: "AC".text.gray800.size(42).make()),
                           ),
                           SizedBox(
@@ -287,7 +272,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
                             width: 90,
                             child: TextButton(
                                 style: textButtonStyle4,
-                                onPressed: () {},
+                                onPressed: () => onClick("="),
                                 child: "=".text.gray800.size(42).make()),
                           ),
                         ])
