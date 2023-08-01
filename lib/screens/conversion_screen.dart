@@ -5,24 +5,47 @@ import 'package:velocity_x/velocity_x.dart';
 import '../components/home_rows.dart';
 import '../components/themes.dart';
 
-List<String> typeList = ["km", "m", "cm", "mm", "um", "nm"];
-
 class ConversionScreen extends StatefulWidget {
-  const ConversionScreen({super.key});
-
+  List<String> typeList = [];
+  String? type;
+  String? conversionType;
+  ConversionScreen({super.key, this.conversionType}) {
+    if (conversionType == "Length") {
+      typeList = lengthList;
+      type = "L";
+    }
+    else if(conversionType == "Mass"){
+      typeList = massList;
+      type = "M";
+    } 
+    else {
+      typeList = ["a", "b"];
+    }
+    print("typelist:$typeList");
+  }
   @override
-  State<ConversionScreen> createState() => _ConversionScreenState();
+  State<ConversionScreen> createState() => _ConversionScreenState(typeList,type);
 }
 
 class _ConversionScreenState extends State<ConversionScreen> {
-  String dropdownValue = typeList.first;
-  String dropdownValue2 = typeList.first;
-
   bool field1 = false;
   bool field2 = false;
 
   String field1Text = "";
   String field2Text = "";
+
+       _ConversionScreenState(List<String> typeList,String? t){
+
+      dropdownValue2 = typeList.first;
+      dropdownValue = typeList.first;
+      type = t;
+       }
+  String? dropdownValue2 ;
+     
+ String? dropdownValue ;
+  
+String? type;
+  
 
   onClick(value) {
     print(value);
@@ -35,7 +58,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
         field1Text += value;
         if (field1Text.isNotEmptyAndNotNull) {
           field2Text =
-              conversionFunction(field1Text, dropdownValue, dropdownValue2)
+              conversionFunction(field1Text, dropdownValue!, dropdownValue2!,type: type!)
                   .toString();
         }
       }
@@ -48,7 +71,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
         field2Text += value;
         if (field2Text.isNotEmptyAndNotNull) {
           field1Text =
-              conversionFunction(field2Text, dropdownValue2, dropdownValue)
+              conversionFunction(field2Text, dropdownValue2!, dropdownValue!,type: type!)
                   .toString();
         }
       }
@@ -91,6 +114,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
                               alignment: Alignment.bottomCenter,
                               isExpanded: true,
                               value: dropdownValue,
+                              // value: d1,
                               icon: const Icon(Icons.arrow_downward,
                                   size: 25,
                                   color: Color.fromARGB(255, 214, 221, 221)),
@@ -105,12 +129,15 @@ class _ConversionScreenState extends State<ConversionScreen> {
                               dropdownColor: Colors.black12,
                               onChanged: (String? value) {
                                 dropdownValue = value!;
+                                // setv1 = value!;
                                 setState(() {
                                   onClick("");
                                 });
                               },
-                              items: typeList.map<DropdownMenuItem<String>>(
-                                  (String value) {
+                              items: widget
+                                  .typeList
+                                  .map<DropdownMenuItem<String>>(
+                                      (String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value),
@@ -121,8 +148,10 @@ class _ConversionScreenState extends State<ConversionScreen> {
                           const SizedBox(
                             width: 10,
                           ),
-                          SizedBox(
+                          Container(
                             width: 280,
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.white)),
                             child: InkWell(
                                 onTap: () {
                                   field1 = true;
@@ -148,6 +177,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
                               alignment: Alignment.bottomCenter,
                               dropdownColor: Colors.black12,
                               value: dropdownValue2,
+                              // value: d2,
                               icon: const Icon(
                                 Icons.arrow_downward,
                                 size: 25,
@@ -164,12 +194,15 @@ class _ConversionScreenState extends State<ConversionScreen> {
                               ),
                               onChanged: (String? value) {
                                 dropdownValue2 = value!;
+                                // setv2 =value!;
                                 setState(() {
                                   onClick("");
                                 });
                               },
-                              items: typeList.map<DropdownMenuItem<String>>(
-                                  (String value) {
+                              items:
+                                  widget.typeList
+                                  .map<DropdownMenuItem<String>>(
+                                      (String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value),
@@ -180,8 +213,10 @@ class _ConversionScreenState extends State<ConversionScreen> {
                           const SizedBox(
                             width: 10,
                           ),
-                          SizedBox(
+                          Container(
                               width: 280,
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.white)),
                               child: InkWell(
                                   onTap: () {
                                     field2 = true;
@@ -303,28 +338,57 @@ class _ConversionScreenState extends State<ConversionScreen> {
   }
 }
 
-conversionFunction(String fieldText, String from, String to) {
+List<String> lengthList = ["km", "m", "cm", "mm", "um", "nm"];
+List<String> massList = ["kg", "gm", "pound", "mg", "ug", "ng"];
+
+conversionFunction(String fieldText, String from, String to,
+    {String type = "L"}) {
   //TODO
-  Map<String, LENGTH> mp = {
-    "km": LENGTH.kilometers,
-    "m": LENGTH.meters,
-    "cm": LENGTH.centimeters,
-    "mm": LENGTH.millimeters,
-    "um": LENGTH.micrometers,
-    "nm": LENGTH.nanometers
-  };
-  var length = Length(significantFigures: 5, removeTrailingZeros: true)
-    ..convert(mp[from]!, double.parse(fieldText));
+  if (type == "L") {
+    Map<String, LENGTH> mp = {
+      "km": LENGTH.kilometers,
+      "m": LENGTH.meters,
+      "cm": LENGTH.centimeters,
+      "mm": LENGTH.millimeters,
+      "um": LENGTH.micrometers,
+      "nm": LENGTH.nanometers
+    };
+    var length = Length(significantFigures: 5, removeTrailingZeros: true)
+      ..convert(mp[from]!, double.parse(fieldText));
 
-  Map<String, Unit> mp1 = {
-    "km": length.kilometers,
-    "m": length.meters,
-    "cm": length.centimeters,
-    "mm": length.millimeters,
-    "um": length.micrometers,
-    "nm": length.nanometers
-  };
+    Map<String, Unit> mp1 = {
+      "km": length.kilometers,
+      "m": length.meters,
+      "cm": length.centimeters,
+      "mm": length.millimeters,
+      "um": length.micrometers,
+      "nm": length.nanometers
+    };
 
-  var ans = mp1[to]!.value;
-  return ans;
+    var ans = mp1[to]!.value;
+    return ans;
+  } else if (type == "M") {
+    Map<String, MASS> mp = {
+      "kg": MASS.kilograms,
+      "gm": MASS.grams,
+      "pound": MASS.pounds,
+      "mg": MASS.milligrams,
+      "ug": MASS.micrograms,
+      "nm": MASS.nanograms
+    };
+    var mass = Mass(significantFigures: 5, removeTrailingZeros: true)
+      ..convert(mp[from]!, double.parse(fieldText));
+
+    Map<String, Unit> mp1 = {
+      "kg": mass.kilograms,
+      "gm": mass.grams,
+      "pound": mass.pounds,
+      "mg": mass.milligrams,
+      "ug": mass.micrograms,
+      "ng": mass.nanograms
+    };
+
+    var ans = mp1[to]!.value;
+    return ans;
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:calculator/components/themes.dart';
+import 'package:calculator/screens/conversion_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -51,18 +52,16 @@ class CalculatorOptionsScreen extends StatelessWidget {
 }
 
 class HorizontalRowsOptions extends StatelessWidget {
-  HorizontalRowsOptions(
+  const HorizontalRowsOptions(
       {super.key,
       required this.textButtonStyle,
       required this.symbol,
       this.itemCount = 3,
-      this.onClick,
       required this.icon});
 
   final List<String> symbol;
   final ButtonStyle textButtonStyle;
   final int itemCount;
-  Function(dynamic value)? onClick;
   final List<IconData> icon;
   @override
   Widget build(BuildContext context) {
@@ -80,7 +79,14 @@ class HorizontalRowsOptions extends StatelessWidget {
               padding: const EdgeInsets.all(2.0),
               child: TextButton(
                 style: textButtonStyle,
-                onPressed: () {},
+                onPressed: () {
+                  print("On tapped:${symbol[index]}");
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              ConversionScreen(conversionType: symbol[index])));
+                },
                 child: Column(
                   children: [
                     Icon(
@@ -94,9 +100,7 @@ class HorizontalRowsOptions extends StatelessWidget {
                         .color(const Color.fromARGB(255, 120, 184, 240))
                         .make(),
                   ],
-                  
                 ),
-                
               ),
             );
           },

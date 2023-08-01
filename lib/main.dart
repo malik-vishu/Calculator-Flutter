@@ -17,11 +17,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Calculator',
         debugShowCheckedModeBanner: false,
-        initialRoute: AllRoutes.conversion,
+        initialRoute: AllRoutes.options,
         routes: {
           AllRoutes.home: (context) => HomeScreen(),
           AllRoutes.options: (context) => CalculatorOptionsScreen(),
-          AllRoutes.conversion: (context) => ConversionScreen()
+          AllRoutes.conversion: (context) => ConversionScreen(conversionType: "Length")
         });
   }
 }
