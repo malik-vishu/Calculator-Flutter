@@ -13,18 +13,20 @@ class ConversionScreen extends StatefulWidget {
     if (conversionType == "Length") {
       typeList = lengthList;
       type = "L";
-    }
-    else if(conversionType == "Mass"){
+    } else if (conversionType == "Mass") {
       typeList = massList;
       type = "M";
-    } 
-    else {
+    } else if (conversionType == "Area") {
+      typeList = areaList;
+      type = "A";
+    } else {
       typeList = ["a", "b"];
     }
     print("typelist:$typeList");
   }
   @override
-  State<ConversionScreen> createState() => _ConversionScreenState(typeList,type);
+  State<ConversionScreen> createState() =>
+      _ConversionScreenState(typeList, type);
 }
 
 class _ConversionScreenState extends State<ConversionScreen> {
@@ -34,18 +36,16 @@ class _ConversionScreenState extends State<ConversionScreen> {
   String field1Text = "";
   String field2Text = "";
 
-       _ConversionScreenState(List<String> typeList,String? t){
+  _ConversionScreenState(List<String> typeList, String? t) {
+    dropdownValue2 = typeList.first;
+    dropdownValue = typeList.first;
+    type = t;
+  }
+  String? dropdownValue2;
 
-      dropdownValue2 = typeList.first;
-      dropdownValue = typeList.first;
-      type = t;
-       }
-  String? dropdownValue2 ;
-     
- String? dropdownValue ;
-  
-String? type;
-  
+  String? dropdownValue;
+
+  String? type;
 
   onClick(value) {
     print(value);
@@ -55,11 +55,22 @@ String? type;
         field1Text = "";
         field2Text = "";
       } else {
-        field1Text += value;
+        if (value == "<") {
+          field1Text = field1Text.substring(0, field1Text.length - 1);
+          if (field1Text.isEmpty) {
+            field2Text = "0";
+          }
+        } else {
+          field1Text += value;
+        }
         if (field1Text.isNotEmptyAndNotNull) {
-          field2Text =
-              conversionFunction(field1Text, dropdownValue!, dropdownValue2!,type: type!)
-                  .toString();
+          field2Text = conversionFunction(
+                  field1Text, dropdownValue!, dropdownValue2!,
+                  type: type!)
+              .toString();
+          if (field2Text.endsWith(".0")) {
+            field2Text = field2Text.substring(0, field2Text.length - 2);
+          }
         }
       }
     } else if (!field1 && field2) {
@@ -68,11 +79,22 @@ String? type;
         field2Text = "";
         field1Text = "";
       } else {
-        field2Text += value;
+        if (value == "<") {
+          field2Text = field2Text.substring(0, field2Text.length - 1);
+          if (field2Text.isEmpty) {
+            field1Text = "0";
+          }
+        } else {
+          field2Text += value;
+        }
         if (field2Text.isNotEmptyAndNotNull) {
-          field1Text =
-              conversionFunction(field2Text, dropdownValue2!, dropdownValue!,type: type!)
-                  .toString();
+          field1Text = conversionFunction(
+                  field2Text, dropdownValue2!, dropdownValue!,
+                  type: type!)
+              .toString();
+          if (field1Text.endsWith(".0")) {
+            field1Text = field1Text.substring(0, field1Text.length - 2);
+          }
         }
       }
     }
@@ -134,8 +156,7 @@ String? type;
                                   onClick("");
                                 });
                               },
-                              items: widget
-                                  .typeList
+                              items: widget.typeList
                                   .map<DropdownMenuItem<String>>(
                                       (String value) {
                                 return DropdownMenuItem<String>(
@@ -199,8 +220,7 @@ String? type;
                                   onClick("");
                                 });
                               },
-                              items:
-                                  widget.typeList
+                              items: widget.typeList
                                   .map<DropdownMenuItem<String>>(
                                       (String value) {
                                 return DropdownMenuItem<String>(
@@ -340,6 +360,7 @@ String? type;
 
 List<String> lengthList = ["km", "m", "cm", "mm", "um", "nm"];
 List<String> massList = ["kg", "gm", "pound", "mg", "ug", "ng"];
+List<String> areaList = ["m^2", "cm^2", "ac", "ha", "km^2", "mile^2"];
 
 conversionFunction(String fieldText, String from, String to,
     {String type = "L"}) {
@@ -353,7 +374,7 @@ conversionFunction(String fieldText, String from, String to,
       "um": LENGTH.micrometers,
       "nm": LENGTH.nanometers
     };
-    var length = Length(significantFigures: 5, removeTrailingZeros: true)
+    var length = Length(significantFigures: 5)
       ..convert(mp[from]!, double.parse(fieldText));
 
     Map<String, Unit> mp1 = {
@@ -376,7 +397,7 @@ conversionFunction(String fieldText, String from, String to,
       "ug": MASS.micrograms,
       "nm": MASS.nanograms
     };
-    var mass = Mass(significantFigures: 5, removeTrailingZeros: true)
+    var mass = Mass(significantFigures: 5)
       ..convert(mp[from]!, double.parse(fieldText));
 
     Map<String, Unit> mp1 = {
@@ -386,6 +407,30 @@ conversionFunction(String fieldText, String from, String to,
       "mg": mass.milligrams,
       "ug": mass.micrograms,
       "ng": mass.nanograms
+    };
+
+    var ans = mp1[to]!.value;
+    return ans;
+  } else if (type == "A") {
+    Map<String, AREA> mp = {
+      "m^2": AREA.squareMeters,
+      "cm^2": AREA.squareCentimeters,
+      "ac": AREA.acres,
+      "ha": AREA.hectares,
+      "km^2": AREA.squareKilometers,
+      "mile^2": AREA.squareMiles
+    };
+    var area = Area(
+      significantFigures: 5,
+    )..convert(mp[from]!, double.parse(fieldText));
+
+    Map<String, Unit> mp1 = {
+      "m^2": area.squareMeters,
+      "cm^2": area.squareCentimeters,
+      "ac": area.acres,
+      "ha": area.hectares,
+      "km^2": area.squareKilometers,
+      "mile^2": area.squareMiles
     };
 
     var ans = mp1[to]!.value;
