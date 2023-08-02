@@ -26,6 +26,9 @@ class ConversionScreen extends StatefulWidget {
     } else if (conversionType == "Data") {
       typeList = tempList;
       type = "D";
+    } else if (conversionType == "Volume") {
+      typeList = volumeList;
+      type = "V";
     } else {
       typeList = ["a", "b"];
     }
@@ -62,7 +65,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
         field1Text = "";
         field2Text = "";
       } else {
-        if (value == "<") {
+        if (value == "<" && field1Text.isNotEmpty) {
           field1Text = field1Text.substring(0, field1Text.length - 1);
           if (field1Text.isEmpty) {
             field2Text = "0";
@@ -86,7 +89,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
         field2Text = "";
         field1Text = "";
       } else {
-        if (value == "<") {
+        if (value == "<" && field2Text.isNotEmpty) {
           field2Text = field2Text.substring(0, field2Text.length - 1);
           if (field2Text.isEmpty) {
             field1Text = "0";
@@ -375,7 +378,7 @@ List<String> lengthList = ["km", "m", "cm", "mm", "um", "nm"];
 List<String> massList = ["kg", "gm", "pound", "mg", "ug", "ng"];
 List<String> areaList = ["m^2", "cm^2", "ac", "ha", "km^2", "mile^2"];
 List<String> tempList = ["C", "K", "F", "R", "Re"];
-
+List<String> volumeList = ["m^3", "l", "dl", "cl", "ml"];
 conversionFunction(String fieldText, String from, String to,
     {String type = "L"}) {
   //TODO
@@ -495,6 +498,28 @@ conversionFunction(String fieldText, String from, String to,
       "GB": data.gigabyte,
       "TB": data.terabyte,
       "PB": data.petabyte,
+    };
+
+    var ans = mp1[to]!.value;
+    return ans;
+  } else if (type == "V") {
+    Map<String, VOLUME> mp = {
+      "m^3": VOLUME.cubicMeters,
+      "l": VOLUME.liters,
+      "dl": VOLUME.deciliters,
+      "cl": VOLUME.centiliters,
+      "ml": VOLUME.milliliters,
+    };
+    var volume = Volume(
+      significantFigures: 5,
+    )..convert(mp[from]!, double.parse(fieldText));
+
+    Map<String, Unit> mp1 = {
+      "m^3": volume.cubicMeters,
+      "l": volume.liters,
+      "dl": volume.deciliter,
+      "cl": volume.centiliter,
+      "ml": volume.milliliters,
     };
 
     var ans = mp1[to]!.value;

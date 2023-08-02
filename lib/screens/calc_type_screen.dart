@@ -25,10 +25,10 @@ class CalculatorOptionsScreen extends StatelessWidget {
                 SafeArea(
                   child: HorizontalRowsOptions(
                     textButtonStyle: textButtonStyle3,
-                    symbol: const ["Area", "BMI", "Data"],
+                    symbol: const ["Area", "Volume", "Data"],
                     icon: const [
                       CupertinoIcons.arrow_down_right_arrow_up_left,
-                      CupertinoIcons.equal,
+                      CupertinoIcons.cube,
                       CupertinoIcons.graph_square
                     ],
                   ),
