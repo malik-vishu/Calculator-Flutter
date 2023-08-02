@@ -6,7 +6,7 @@ import '../components/home_rows.dart';
 import '../components/themes.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -15,10 +15,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String input = '';
   String output = '';
-
+  bool newCalc = true;
   bool inputHide = false;
   double outputSize = 42;
   onClick(value) {
+    List<String> operators = ["/", "+", "-", "*", "=", "%"];
     if (value == "X") {
       value = "*";
     }
@@ -27,7 +28,17 @@ class _HomeScreenState extends State<HomeScreen> {
       output = '';
     } else if (value == '<' && !input.isEmptyOrNull) {
       input = input.substring(0, input.length - 1);
+    } else if (newCalc && !operators.contains(value)) {
+      input = value;
+      output = value;
+      newCalc = false;
+    } else if (value != '<' && value!="=") {
+      newCalc = false;
+      input = input + value;
+      inputHide = false;
+      outputSize = 42;
     } else if (value == '=') {
+      newCalc = true;
       if (input.isNotEmpty) {
         Parser parser = Parser();
         Expression exp = parser.parse(input);
@@ -43,12 +54,6 @@ class _HomeScreenState extends State<HomeScreen> {
         input = output;
         inputHide = true;
         outputSize = 48;
-      }
-    } else {
-      if (value != '<') {
-        input = input + value;
-        inputHide = false;
-        outputSize = 42;
       }
     }
     setState(() {});

@@ -38,6 +38,7 @@ dependencies:
   velocity_x: ^4.1.1
   math_expressions: ^2.4.0
   units_converter: ^2.1.0
+  auto_size_text: ^3.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

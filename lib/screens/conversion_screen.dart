@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:units_converter/units_converter.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -19,6 +20,12 @@ class ConversionScreen extends StatefulWidget {
     } else if (conversionType == "Area") {
       typeList = areaList;
       type = "A";
+    } else if (conversionType == "Temperature") {
+      typeList = tempList;
+      type = "T";
+    } else if (conversionType == "Data") {
+      typeList = tempList;
+      type = "D";
     } else {
       typeList = ["a", "b"];
     }
@@ -136,7 +143,6 @@ class _ConversionScreenState extends State<ConversionScreen> {
                               alignment: Alignment.bottomCenter,
                               isExpanded: true,
                               value: dropdownValue,
-                              // value: d1,
                               icon: const Icon(Icons.arrow_downward,
                                   size: 25,
                                   color: Color.fromARGB(255, 214, 221, 221)),
@@ -148,10 +154,11 @@ class _ConversionScreenState extends State<ConversionScreen> {
                                 height: 2,
                                 color: const Color.fromARGB(255, 214, 221, 221),
                               ),
-                              dropdownColor: Colors.black12,
+                              dropdownColor:
+                                  const Color.fromARGB(255, 82, 82, 82),
                               onChanged: (String? value) {
                                 dropdownValue = value!;
-                                // setv1 = value!;
+
                                 setState(() {
                                   onClick("");
                                 });
@@ -161,7 +168,10 @@ class _ConversionScreenState extends State<ConversionScreen> {
                                       (String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
-                                  child: Text(value),
+                                  child: AutoSizeText(
+                                    value,
+                                    maxLines: 1,
+                                  ),
                                 );
                               }).toList(),
                             ),
@@ -196,9 +206,9 @@ class _ConversionScreenState extends State<ConversionScreen> {
                             fit: FlexFit.loose,
                             child: DropdownButton<String>(
                               alignment: Alignment.bottomCenter,
-                              dropdownColor: Colors.black12,
+                              dropdownColor:
+                                  const Color.fromARGB(255, 82, 82, 82),
                               value: dropdownValue2,
-                              // value: d2,
                               icon: const Icon(
                                 Icons.arrow_downward,
                                 size: 25,
@@ -215,7 +225,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
                               ),
                               onChanged: (String? value) {
                                 dropdownValue2 = value!;
-                                // setv2 =value!;
+
                                 setState(() {
                                   onClick("");
                                 });
@@ -225,7 +235,10 @@ class _ConversionScreenState extends State<ConversionScreen> {
                                       (String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
-                                  child: Text(value),
+                                  child: AutoSizeText(
+                                    value,
+                                    maxLines: 1,
+                                  ),
                                 );
                               }).toList(),
                             ),
@@ -361,6 +374,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
 List<String> lengthList = ["km", "m", "cm", "mm", "um", "nm"];
 List<String> massList = ["kg", "gm", "pound", "mg", "ug", "ng"];
 List<String> areaList = ["m^2", "cm^2", "ac", "ha", "km^2", "mile^2"];
+List<String> tempList = ["C", "K", "F", "R", "Re"];
 
 conversionFunction(String fieldText, String from, String to,
     {String type = "L"}) {
@@ -431,6 +445,56 @@ conversionFunction(String fieldText, String from, String to,
       "ha": area.hectares,
       "km^2": area.squareKilometers,
       "mile^2": area.squareMiles
+    };
+
+    var ans = mp1[to]!.value;
+    return ans;
+  } else if (type == "T") {
+    Map<String, TEMPERATURE> mp = {
+      "C": TEMPERATURE.celsius,
+      "K": TEMPERATURE.kelvin,
+      "F": TEMPERATURE.fahrenheit,
+      "R": TEMPERATURE.rankine,
+      "Re": TEMPERATURE.reamur,
+    };
+    var temp = Temperature(
+      significantFigures: 5,
+    )..convert(mp[from]!, double.parse(fieldText));
+
+    Map<String, Unit> mp1 = {
+      "C": temp.celsius,
+      "K": temp.kelvin,
+      "F": temp.fahrenheit,
+      "R": temp.rankine,
+      "Re": temp.reamur,
+    };
+
+    var ans = mp1[to]!.value;
+    return ans;
+  } else if (type == "D") {
+    Map<String, DIGITAL_DATA> mp = {
+      "b": DIGITAL_DATA.bit,
+      "B": DIGITAL_DATA.byte,
+      "Kb": DIGITAL_DATA.kilobit,
+      "KB": DIGITAL_DATA.kilobyte,
+      "MB": DIGITAL_DATA.megabyte,
+      "GB": DIGITAL_DATA.gigabyte,
+      "TB": DIGITAL_DATA.terabyte,
+      "PB": DIGITAL_DATA.petabyte,
+    };
+    var data = DigitalData(
+      significantFigures: 5,
+    )..convert(mp[from]!, double.parse(fieldText));
+
+    Map<String, Unit> mp1 = {
+      "b": data.bit,
+      "B": data.byte,
+      "Kb": data.kilobit,
+      "KB": data.kilobyte,
+      "MB": data.megabyte,
+      "GB": data.gigabyte,
+      "TB": data.terabyte,
+      "PB": data.petabyte,
     };
 
     var ans = mp1[to]!.value;
