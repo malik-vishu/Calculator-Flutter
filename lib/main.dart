@@ -16,14 +16,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(fontFamily: "Outfit"),
         title: 'Calculator',
         debugShowCheckedModeBanner: false,
         initialRoute: AllRoutes.pageview,
         routes: {
-          AllRoutes.home: (context) => HomeScreen(),
+          AllRoutes.home: (context) => const HomeScreen(),
           AllRoutes.options: (context) => const CalculatorOptionsScreen(),
-          AllRoutes.conversion: (context) => ConversionScreen(conversionType: "Length"),
-          AllRoutes.pageview:(context) => PageViewWidget()
+          AllRoutes.conversion: (context) =>
+              ConversionScreen(conversionType: "Length"),
+          AllRoutes.pageview: (context) => PageViewWidget()
         });
   }
 }

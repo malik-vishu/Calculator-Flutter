@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
       input = value;
       output = value;
       newCalc = false;
-    } else if (value != '<' && value!="=") {
+    } else if (value != '<' && value != "=") {
       newCalc = false;
       input = input + value;
       inputHide = false;
@@ -62,6 +62,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: "Calculator".text.headline5(context).wide.gray800.make(),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.lightBlueAccent[400],
+      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -69,6 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
                 padding: const EdgeInsets.all(15),
