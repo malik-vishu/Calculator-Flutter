@@ -15,6 +15,7 @@ class HorizontalRowsHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      physics: const NeverScrollableScrollPhysics(),
       padding: EdgeInsets.zero,
       scrollDirection: Axis.horizontal,
       itemCount: itemCount,

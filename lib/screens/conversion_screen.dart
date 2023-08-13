@@ -24,7 +24,7 @@ class ConversionScreen extends StatefulWidget {
       typeList = tempList;
       type = "T";
     } else if (conversionType == "Data") {
-      typeList = tempList;
+      typeList = dataList;
       type = "D";
     } else if (conversionType == "Volume") {
       typeList = volumeList;
@@ -281,7 +281,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
                 height: MediaQuery.of(context).size.height * 0.5,
                 width: MediaQuery.of(context).size.width,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     VStack(
@@ -293,7 +293,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
                             padding: const EdgeInsets.all(3.0),
                             child: SizedBox(
                               height: 75,
-                              width: MediaQuery.of(context).size.width * 0.6,
+                              width: MediaQuery.of(context).size.width * 0.61,
                               child: HorizontalRowsHome(
                                   textButtonStyle: textButtonStyle1,
                                   symbol: const ["7", "8", "9"],
@@ -305,7 +305,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
                             padding: const EdgeInsets.all(3.0),
                             child: SizedBox(
                               height: 75,
-                              width: MediaQuery.of(context).size.width * 0.6,
+                              width: MediaQuery.of(context).size.width * 0.61,
                               child: HorizontalRowsHome(
                                   textButtonStyle: textButtonStyle1,
                                   symbol: const ["4", "5", "6"],
@@ -317,7 +317,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
                             padding: const EdgeInsets.all(3.0),
                             child: SizedBox(
                               height: 75,
-                              width: MediaQuery.of(context).size.width * 0.6,
+                              width: MediaQuery.of(context).size.width * 0.61,
                               child: HorizontalRowsHome(
                                   textButtonStyle: textButtonStyle1,
                                   symbol: const ["1", "2", "3"],
@@ -338,9 +338,6 @@ class _ConversionScreenState extends State<ConversionScreen> {
                             ),
                           ),
                         ]),
-                    const SizedBox(
-                      width: 5,
-                    ),
                     VStack(
                         alignment: MainAxisAlignment.center,
                         crossAlignment: CrossAxisAlignment.center,
@@ -348,7 +345,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
                         [
                           SizedBox(
                             height: 180,
-                            width: 90,
+                            width: MediaQuery.of(context).size.width * 0.3,
                             child: TextButton(
                                 style: textButtonStyle4,
                                 onPressed: () => onClick("AC"),
@@ -356,7 +353,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
                           ),
                           SizedBox(
                             height: 180,
-                            width: 90,
+                            width: MediaQuery.of(context).size.width * 0.3,
                             child: TextButton(
                                 style: textButtonStyle4,
                                 onPressed: () => onClick("<"),
@@ -378,10 +375,10 @@ List<String> lengthList = ["km", "m", "cm", "mm", "um", "nm"];
 List<String> massList = ["kg", "gm", "pound", "mg", "ug", "ng"];
 List<String> areaList = ["m^2", "cm^2", "ac", "ha", "km^2", "mile^2"];
 List<String> tempList = ["C", "K", "F", "R", "Re"];
+List<String> dataList = ["b", "B", "Kb", "KB", "MB", "GB", "TB", "PB"];
 List<String> volumeList = ["m^3", "l", "dl", "cl", "ml"];
 conversionFunction(String fieldText, String from, String to,
     {String type = "L"}) {
-  //TODO
   if (type == "L") {
     Map<String, LENGTH> mp = {
       "km": LENGTH.kilometers,
